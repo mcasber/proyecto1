@@ -8,27 +8,12 @@ sql = "SELECT * FROM gastos ORDER BY id ASC"
 datos=cursor.execute(sql)
 
 df=pd.DataFrame(datos)
-#print("DATAFRAME\n", df)
-print("\nShape:", df.shape)
-print("Filas:", len(df.index))
-print("Columnas:", len(df.columns))
+#print(df.head(2))
+print(df.info())
 
-print("\nESTADISTICAS")
-print(df[3].describe())
-        #aca indico la columna
+df[3] = df[3].replace('', '0') # Reemplazar cadenas vacías con 0
+df[3] = df[3].astype(float)
+print(df.info())
 
-
-"""
-print("\nMedia")
-print(df[3].mean())
-print("\nMediana")
-print(df[3].median())
-print("\nValores no nulos")
-print(df[3].count())
-print("\nValores máximos")
-print(df[3].max())
-print("\nValores mínimos")
-print(df[3].min())
-print("\nDesvío Estándar")
-print(df[3].std())
-"""
+df["Requiere"] = df[3].apply(lambda x: "Aprobar" if x > 100 else "No aprobar")
+print(df.head(2))
